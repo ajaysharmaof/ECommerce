@@ -1,0 +1,73 @@
+{% extends 'shop/basic.html' %}
+{% block title %} {{productIdQuickView.product_name}} - ECommerce {% endblock %}
+
+{% block body %}
+
+<div class="container my-4">
+    <div class="row">
+    <div class="col-md-4">
+   
+    <div class="row">
+        <img src="/media/{{productIdQuickView.image}}" width="233px" height="385px"/>
+    </div>
+    
+    <div class="row my-4" >
+        <button class="btn btn-primary mx-3 ">Add to Cart</button>
+        <button class="btn btn-primary">Buy Now</button>
+    </div>
+    </div> <!--col md-4 -->
+    
+    <div class="col-md-8">
+        <h5><b>{{productIdQuickView.product_name}}</b></h5>
+        <p><b>Rs. {{productIdQuickView.price}}</b></p>
+        <p>{{productIdQuickView.desc}}</p>
+
+    </div>
+    
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block js %}
+<script>
+console.log('working');
+if(localStorage.getItem('cart') == null){   //if nothing in localstorage name of cart then create one
+    var cart = {};                              //var cart
+}
+else{
+    cart = JSON.parse(localStorage.getItem('cart')); //else if var exist then load it using parse   
+ document.getElementById('cart').innerHTML = Object.keys(cart).length;  
+}
+$('.cart').click(function(){
+    console.log('click')
+    var idstr = this.id.toString();
+    console.log(idstr);
+
+    if(cart[idstr] != undefined){
+        cart[idstr] =  cart[idstr] + 1; //if item already exist in cart then increase by 1 
+         document.getElementById('cart').innerHTML = Object.keys(cart).length;  
+    }
+    else{
+        cart[idstr] = 1; //else add that item if not in cart or 
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;  
+    }
+    console.log(cart);
+    localStorage.setItem('cart',JSON.stringify(cart)); //after loading page still in item in cart
+    //take length of cart and add to cart object in header
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;  //of basic.html id of cart
+    
+});
+$('#popcart').popover();
+document.getElementById('popcart').setAttribute('data-content','<h6>Cart for your item</h6>');
+</script>
+
+{% endblock %}
+
